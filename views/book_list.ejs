@@ -1,4 +1,4 @@
-<h2 class="text-2xl mb-5 font-bold leading-7 text-gray-900 sm:text-3xl sm:truncate"><%= title %></h2>
+<%- include('components/header', { title }) %>
 <div class="bg-white shadow overflow-hidden sm:rounded-md">
     <ul class="divide-y divide-gray-200">
         <% book_list.sort(function(a, b) {
