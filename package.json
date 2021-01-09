@@ -20,6 +20,7 @@
     "express-partials": "^0.3.0",
     "http-errors": "~1.6.3",
     "knex": "^0.21.15",
+    "luxon": "^1.25.0",
     "morgan": "~1.9.1",
     "nodemon": "^2.0.7",
     "pg": "^8.5.1",
