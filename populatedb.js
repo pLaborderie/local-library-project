@@ -19,6 +19,23 @@ var genres = []
 var books = []
 var bookinstances = []
 
+function  deleteAll(cb) {
+  return async.series([
+    function(callback) {
+      BookInstance.deleteAll({ require: false }).then((res) => callback(null, res)).catch(err => callback(err));
+    },
+    function(callback) {
+      Book.deleteAll({ require: false }).then((res) => callback(null, res)).catch(err => callback(err));
+    },
+    function(callback) {
+      Author.deleteAll({ require: false }).then((res) => callback(null, res)).catch(err => callback(err));
+    },
+    function(callback) {
+      Genre.deleteAll({ require: false }).then((res) => callback(null, res)).catch(err => callback(err));
+    },
+  ], cb);
+}
+
 function authorCreate(first_name, family_name, d_birth, d_death, cb) {
   authordetail = {first_name:first_name , family_name: family_name }
   if (d_birth != false) authordetail.date_of_birth = d_birth
@@ -177,23 +194,23 @@ function createBookInstances(cb) {
 }
 
 
-
-async.series([
+deleteAll(function(err, results) {
+  async.series([
     createGenreAuthors,
     createBooks,
     createBookInstances
-],
-// Optional callback
-function(err, results) {
-    if (err) {
-        console.log('FINAL ERR: '+err);
-    }
-    else {
-        console.log('BOOKInstances: '+bookinstances);
-        
-    }
-    // All done, disconnect from database
-
+  ],
+  // Optional callback
+  function(err, results) {
+      if (err) {
+          console.log('FINAL ERR: '+err);
+          console.log(err);
+          console.log(results);
+      }
+      else {
+          console.log('BookInstances: '+bookinstances);
+      }
+  });
 });
 
 
