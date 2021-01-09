@@ -19,25 +19,13 @@
               <div class="hidden lg:block lg:ml-10">
                 <div class="flex space-x-4">
                   <!-- Current: "bg-indigo-700 text-white", Default: "text-white hover:bg-indigo-500 hover:bg-opacity-75" -->
-                  <a href="#" class="bg-indigo-700 text-white rounded-md py-2 px-3 text-sm font-medium">
-                    Dashboard
+                  <a href="/" class="bg-indigo-700 text-white rounded-md py-2 px-3 text-sm font-medium">
+                    Home
                   </a>
-  
-                  <a href="#" class="text-white hover:bg-indigo-500 hover:bg-opacity-75 rounded-md py-2 px-3 text-sm font-medium">
-                    Team
-                  </a>
-  
-                  <a href="#" class="text-white hover:bg-indigo-500 hover:bg-opacity-75 rounded-md py-2 px-3 text-sm font-medium">
-                    Projects
-                  </a>
-  
-                  <a href="#" class="text-white hover:bg-indigo-500 hover:bg-opacity-75 rounded-md py-2 px-3 text-sm font-medium">
-                    Calendar
-                  </a>
-  
-                  <a href="#" class="text-white hover:bg-indigo-500 hover:bg-opacity-75 rounded-md py-2 px-3 text-sm font-medium">
-                    Reports
-                  </a>
+                  <%- include('components/dropdown', { link: '/catalog/books', button_name: 'Books' }) %>
+                  <%- include('components/dropdown', { link: '/catalog/authors', button_name: 'Authors' }) %>
+                  <%- include('components/dropdown', { link: '/catalog/genres', button_name: 'Genres' }) %>
+                  <%- include('components/dropdown', { link: '/catalog/bookinstances', button_name: 'Book Instances' }) %>
                 </div>
               </div>
             </div>
@@ -74,24 +62,24 @@
         <div class="hidden lg:hidden">
           <div class="px-2 pt-2 pb-3 space-y-1">
             <!-- Current: "bg-indigo-700 text-white", Default: "text-white hover:bg-indigo-500 hover:bg-opacity-75" -->
-            <a href="#" class="bg-indigo-700 text-white block rounded-md py-2 px-3 text-base font-medium">
-              Dashboard
+            <a href="/" class="bg-indigo-700 text-white block rounded-md py-2 px-3 text-base font-medium">
+              Home
             </a>
   
             <a href="#" class="text-white hover:bg-indigo-500 hover:bg-opacity-75 block rounded-md py-2 px-3 text-base font-medium">
-              Team
+              Books
             </a>
   
             <a href="#" class="text-white hover:bg-indigo-500 hover:bg-opacity-75 block rounded-md py-2 px-3 text-base font-medium">
-              Projects
+              Authors
             </a>
   
             <a href="#" class="text-white hover:bg-indigo-500 hover:bg-opacity-75 block rounded-md py-2 px-3 text-base font-medium">
-              Calendar
+              Genres
             </a>
   
             <a href="#" class="text-white hover:bg-indigo-500 hover:bg-opacity-75 block rounded-md py-2 px-3 text-base font-medium">
-              Reports
+              Book Instances
             </a>
           </div>
         </div>

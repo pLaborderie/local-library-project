@@ -1,0 +1,61 @@
+<!-- This example requires Tailwind CSS v2.0+ -->
+<div class="relative inline-block text-left">
+  <div>
+    <button type="button"
+      class="inline-flex justify-center text-white hover:bg-indigo-500 hover:bg-opacity-75 rounded-md py-2 px-3 text-sm font-medium"
+      id="options-menu-<%= link %>" aria-haspopup="true" aria-expanded="true">
+      <%= button_name %>
+      <!-- Heroicon name: chevron-down -->
+      <svg class="-mr-1 ml-2 h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"
+        aria-hidden="true">
+        <path fill-rule="evenodd"
+          d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+          clip-rule="evenodd" />
+      </svg>
+    </button>
+  </div>
+
+  <!--
+      Dropdown panel, show/hide based on dropdown state.
+  
+      Entering: "transition ease-out duration-100"
+        From: "transform opacity-0 scale-95"
+        To: "transform opacity-100 scale-100"
+      Leaving: "transition ease-in duration-75"
+        From: "transform opacity-100 scale-100"
+        To: "transform opacity-0 scale-95"
+    -->
+  <div
+    class="origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 divide-y divide-gray-100 transition ease-in duration-75 transform opacity-0 scale-95"
+    id="options-dropdown-<%= link %>"
+    role="menu" aria-orientation="vertical" aria-labelledby="options-menu-<%= link %>">
+    <div class="py-1">
+      <a href="<%= link %>" class="group flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900"
+        role="menuitem">
+        <!-- Heroicon name: view-list -->
+        <svg class="mr-3 h-5 w-5 text-gray-400 group-hover:text-gray-500" fill="none" stroke="currentColor"
+          viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16">
+          </path>
+        </svg>
+        List
+      </a>
+      <a href="<%= link %>/create" class="group flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900"
+        role="menuitem">
+        <!-- Heroicon name: plus -->
+        <svg class="mr-3 h-5 w-5 text-gray-400 group-hover:text-gray-500" fill="none" stroke="currentColor"
+          viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+        </svg>
+        Create
+      </a>
+    </div>
+  </div>
+  <script>
+    // Hide/show dropdown on click button
+    document.getElementById('options-menu-<%= link %>').addEventListener('click', (event) => {
+      const classes = 'ease-in ease-out duration-100 duration-75 opacity-100 opacity-0 scale-100 scale-95'.split(' ');
+      classes.forEach(cssClass => document.getElementById('options-dropdown-<%= link %>').classList.toggle(cssClass));
+    });
+  </script>
+</div>
