@@ -1,4 +1,5 @@
-var Genre = require('../models/genre');
+const Genre = require('../models/genre');
+const Book = require('../models/book');
 
 // Display list of all Genre.
 exports.genre_list = async function(req, res, next) {
@@ -11,8 +12,21 @@ exports.genre_list = async function(req, res, next) {
 };
 
 // Display detail page for a specific Genre.
-exports.genre_detail = function(req, res) {
-    res.send('NOT IMPLEMENTED: Genre detail: ' + req.params.id);
+exports.genre_detail = async function(req, res, next) {
+    try {
+        const [genre, books] = await Promise.all([
+            new Genre({ id: req.params.id }).fetch(),
+            new Book({ genre_id: req.params.id }).fetchAll(),
+        ]);
+        if (!genre) {
+            const err = new Error('Genre not found');
+            err.status = 404;
+            return next(err);
+        }
+        res.render('genre_detail', { title: 'Genre Detail', genre: genre.serialize(), genre_books: books.serialize() });
+    } catch (err) {
+        return next(err);
+    }
 };
 
 // Display Genre create form on GET.
