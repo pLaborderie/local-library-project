@@ -42,7 +42,7 @@ exports.book_list = function(req, res, next) {
 exports.book_detail = async function(req, res, next) {
     const { id } = req.params;
     try {
-        const book = await new Book({ id }).fetch({ withRelated: ['bookinstance', 'author', 'genre'] });
+        const book = await new Book({ id }).fetch({ withRelated: ['bookinstance', 'author', 'genres'] });
         if (!book) {
             const err = new Error('Book not found');
             err.status = 404;

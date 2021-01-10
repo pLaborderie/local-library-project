@@ -40,8 +40,10 @@
           Genre
         </dt>
         <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-          <% if (book.genre) { %>
-            <a href="<%= book.genre.url %>"><%= book.genre.name %></a>
+          <% if (book.genres) { %>
+            <% book.genres.forEach((genre, index) => { %>
+              <a href="<%= genre.url %>"><%= genre.name %><%= index < book.genres.length - 1 ? ', ' : '' %></a>
+            <% }) %>
           <% } %>
         </dd>
       </div>

@@ -2,8 +2,8 @@ const bookshelf = require('../bookshelf');
 
 const Book = bookshelf.model('Book', {
     tableName: 'books',
-    genre() {
-        return this.belongsTo('Genre');
+    genres() {
+        return this.belongsToMany('Genre');
     },
     bookinstance() {
         return this.hasMany('BookInstance');

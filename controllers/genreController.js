@@ -16,16 +16,14 @@ exports.genre_list = async function (req, res, next) {
 // Display detail page for a specific Genre.
 exports.genre_detail = async function (req, res, next) {
   try {
-    const [genre, books] = await Promise.all([
-      new Genre({ id: req.params.id }).fetch(),
-      new Book({ genre_id: req.params.id }).fetchAll(),
-    ]);
+    const genre = await new Genre({ id: req.params.id })
+      .fetch({ withRelated: 'books' });
     if (!genre) {
       const err = new Error('Genre not found');
       err.status = 404;
       return next(err);
     }
-    res.render('genre_detail', { title: 'Genre Detail', genre: genre.toJSON(), genre_books: books.toJSON() });
+    res.render('genre_detail', { title: 'Genre Detail', genre: genre.toJSON() });
   } catch (err) {
     return next(err);
   }

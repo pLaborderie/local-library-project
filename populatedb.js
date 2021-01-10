@@ -65,12 +65,14 @@ function bookCreate(title, summary, isbn, author, genre, cb) {
     author_id: author.id,
     isbn: isbn
   }
-  if (genre != false) bookdetail.genre_id = genre.id
     
   var book = new Book(bookdetail);
   book.save().then((data) => {
     console.log("New book:", data);
     books.push(data);
+    if (genre) {
+      return data.genres().attach(genre).then(() => cb(null, data))
+    }
     cb(null, data);
   });
 }
@@ -88,6 +90,7 @@ function bookInstanceCreate(book, imprint, due_back, status, cb) {
   bookinstance.save().then(data => {
     console.log("New book instance:", data);
     bookinstances.push(data);
+    cb(null, data);
   });
 }
 

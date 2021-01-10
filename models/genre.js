@@ -3,7 +3,7 @@ const bookshelf = require('../bookshelf');
 const Genre = bookshelf.model('Genre', {
     tableName: 'genres',
     books() {
-        return this.hasMany('Book');
+        return this.belongsToMany('Book');
     },
     virtuals: {
         url() {
