@@ -41,7 +41,7 @@ exports.author_create_post = [
   body('date_of_death', 'Invalid date of death').optional({ checkFalsy: true }).isISO8601().toDate(),
   (req, res, next) => {
     const errors = validationResult(req);
-    if (!errors.isEmpty) {
+    if (!errors.isEmpty()) {
       return res.render('author_form', {
         title: 'Create Author',
         author: req.body,
