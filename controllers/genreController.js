@@ -5,7 +5,7 @@ const Book = require('../models/book');
 exports.genre_list = async function(req, res, next) {
     try {
         const genre_list = await Genre.fetchAll();
-        res.render('genre_list', { title: 'Genre List', genre_list: genre_list.serialize() });
+        res.render('genre_list', { title: 'Genre List', genre_list: genre_list.toJSON() });
     } catch (err) {
         return next(err);
     }
@@ -23,7 +23,7 @@ exports.genre_detail = async function(req, res, next) {
             err.status = 404;
             return next(err);
         }
-        res.render('genre_detail', { title: 'Genre Detail', genre: genre.serialize(), genre_books: books.serialize() });
+        res.render('genre_detail', { title: 'Genre Detail', genre: genre.toJSON(), genre_books: books.toJSON() });
     } catch (err) {
         return next(err);
     }

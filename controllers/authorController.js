@@ -4,15 +4,25 @@ const Author = require('../models/author');
 exports.author_list = async function(req, res, next) {
     try {
         const authors = await Author.orderBy('family_name', 'asc').fetchAll()
-        res.render('author_list', { title: 'Author List', author_list: authors.serialize() });
+        res.render('author_list', { title: 'Author List', author_list: authors.toJSON() });
     } catch (err) {
         return next(err);
     }
 };
 
 // Display detail page for a specific Author.
-exports.author_detail = function(req, res) {
-    res.send('NOT IMPLEMENTED: Author detail: ' + req.params.id);
+exports.author_detail = async function(req, res, next) {
+    try {
+        const author = await new Author({ id: req.params.id }).fetch({ withRelated: ['books'] });
+        if (!author) {
+            const err = new Error('Author not found');
+            err.status(404);
+            throw err;
+        }
+        res.render('author_detail', { title: 'Author Detail', author: author.toJSON() });
+    } catch (err) {
+        next(err);
+    }
 };
 
 // Display Author create form on GET.

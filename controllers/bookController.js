@@ -31,7 +31,7 @@ exports.index = function(req, res) {
 exports.book_list = function(req, res, next) {
     new Book().fetchAll({ columns: ['title', 'author_id', 'id'], withRelated: 'author' })
         .then((books) => {
-            res.render('book_list', { title: 'Book List', book_list: books.serialize() });
+            res.render('book_list', { title: 'Book List', book_list: books.toJSON() });
         })
         .catch((err) => {
             return next(err);
@@ -48,7 +48,7 @@ exports.book_detail = async function(req, res, next) {
             err.status = 404;
             throw err;
         }
-        res.render('book_detail', { title: 'Book Details', book: book.serialize() });
+        res.render('book_detail', { title: 'Book Details', book: book.toJSON() });
     } catch (err) {
         return next(err);
     }

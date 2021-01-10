@@ -4,7 +4,7 @@ var BookInstance = require('../models/bookinstance');
 exports.bookinstance_list = async function(req, res, next) {
     try {
         const bookInstances = await BookInstance.fetchAll({ withRelated: ['book', 'book.author'] });
-        res.render('bookinstance_list', { title: 'Book Instance List', bookinstance_list: bookInstances.serialize() });
+        res.render('bookinstance_list', { title: 'Book Instance List', bookinstance_list: bookInstances.toJSON() });
     } catch (err) {
         return next(err)
     }
