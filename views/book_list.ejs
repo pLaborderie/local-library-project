@@ -6,7 +6,6 @@
             let textB = b.title.toUpperCase();
             return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;
         }); %>
-        <% console.log(book_list); %>
         <% book_list.forEach(book => { %>
             <li>
                 <a href="<%= book.url %>" class="block hover:bg-gray-50">

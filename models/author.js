@@ -11,7 +11,6 @@ const Author = bookshelf.model('Author', {
             return this.get('first_name') + ' ' + this.get('family_name');
         },
          lifespan() {
-             console.log(this.get('date_of_birth'));
             return ((this.get('date_of_death') || new Date()).getYear() - (this.get('date_of_birth') || new Date()).getYear()).toString();
         },
          url() {

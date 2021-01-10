@@ -23,7 +23,6 @@ exports.index = function(req, res) {
             Genre.count().then(res => callback(null, res));
         }
     }, function(err, results) {
-        console.log(results);
         res.render('index', { title: 'Local Library Home', error: err, data: results, layout: 'layout.ejs' });
     });
 };
