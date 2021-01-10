@@ -40,8 +40,19 @@ exports.book_list = function(req, res, next) {
 };
 
 // Display detail page for a specific book.
-exports.book_detail = function(req, res) {
-    res.send('NOT IMPLEMENTED: Book detail: ' + req.params.id);
+exports.book_detail = async function(req, res, next) {
+    const { id } = req.params;
+    try {
+        const book = await new Book({ id }).fetch({ withRelated: ['bookinstance', 'author', 'genre'] });
+        if (!book) {
+            const err = new Error('Book not found');
+            err.status = 404;
+            throw err;
+        }
+        res.render('book_detail', { title: 'Book Details', book: book.serialize() });
+    } catch (err) {
+        return next(err);
+    }
 };
 
 // Display book create form on GET.
