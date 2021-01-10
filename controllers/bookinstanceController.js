@@ -12,8 +12,22 @@ exports.bookinstance_list = async function(req, res, next) {
 };
 
 // Display detail page for a specific BookInstance.
-exports.bookinstance_detail = function(req, res) {
-    res.send('NOT IMPLEMENTED: BookInstance detail: ' + req.params.id);
+exports.bookinstance_detail = async function(req, res, next) {
+    try {
+        const bookinstance = await new BookInstance({ id: req.params.id }).fetch({ withRelated: 'book' });
+        if (!bookinstance) {
+            const error = new Error('Book copy not found');
+            err.status = 404;
+            throw err;
+        }
+        const instanceJson = bookinstance.toJSON();
+        return res.render(
+            'bookinstance_detail',
+            { title: 'Copy: ' + instanceJson.book.title, bookinstance: instanceJson },
+        );
+    } catch (err) {
+        return next(err);
+    }
 };
 
 // Display BookInstance create form on GET.

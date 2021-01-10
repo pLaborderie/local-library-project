@@ -1,0 +1,53 @@
+<%- include('components/header', { title }) %>
+<!-- This example requires Tailwind CSS v2.0+ -->
+<div>
+  <div>
+    <h3 class="text-lg leading-6 font-medium text-gray-900">
+      ID: <%= bookinstance.id %>
+    </h3>
+    <p class="mt-1 max-w-2xl text-sm text-gray-500">
+      Book instance description
+    </p>
+  </div>
+  <div class="mt-5 border-t border-gray-200">
+    <dl class="sm:divide-y sm:divide-gray-200">
+      <div class="py-4 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4">
+        <dt class="text-sm font-medium text-gray-500">
+          Title
+        </dt>
+        <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+          <a href="<%= bookinstance.book.url %>"><%= bookinstance.book.title %></a>
+        </dd>
+      </div>
+      <div class="py-4 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4">
+        <dt class="text-sm font-medium text-gray-500">
+          Imprint
+        </dt>
+        <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+          <%= bookinstance.imprint %>
+        </dd>
+      </div>
+      <div class="py-4 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4">
+        <dt class="text-sm font-medium text-gray-500">
+          Status
+        </dt>
+        <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+          <%- include('components/status_badge', { status: bookinstance.status }) %>
+        </dd>
+      </div>
+      <% if (bookinstance.status !== 'Available') { %>
+        <div class="py-4 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4">
+          <dt class="text-sm font-medium text-gray-500">
+            Due back
+          </dt>
+          <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+            <%= bookinstance.due_back_formatted %>
+          </dd>
+        </div>
+      <% } %>
+    </dl>
+  </div>
+</div>
+
+
+
