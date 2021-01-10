@@ -22,10 +22,10 @@
                   <a href="/" class="bg-indigo-700 text-white rounded-md py-2 px-3 text-sm font-medium">
                     Home
                   </a>
-                  <%- include('components/dropdown', { link: '/catalog/books', button_name: 'Books' }) %>
-                  <%- include('components/dropdown', { link: '/catalog/authors', button_name: 'Authors' }) %>
-                  <%- include('components/dropdown', { link: '/catalog/genres', button_name: 'Genres' }) %>
-                  <%- include('components/dropdown', { link: '/catalog/bookinstances', button_name: 'Book Instances' }) %>
+                  <%- include('components/dropdown', { createLink: '/catalog/book/create', link: '/catalog/books', button_name: 'Books' }) %>
+                  <%- include('components/dropdown', { createLink: '/catalog/author/create', link: '/catalog/authors', button_name: 'Authors' }) %>
+                  <%- include('components/dropdown', { createLink: '/catalog/genre/create', link: '/catalog/genres', button_name: 'Genres' }) %>
+                  <%- include('components/dropdown', { createLink: '/catalog/bookinstance/create', link: '/catalog/bookinstances', button_name: 'Book Instances' }) %>
                 </div>
               </div>
             </div>

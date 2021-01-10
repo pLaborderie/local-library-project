@@ -7,5 +7,5 @@ module.exports = {
   variants: {
     extend: {},
   },
-  plugins: ['@tailwindcss/forms'],
+  plugins: [require('@tailwindcss/forms')],
 }
