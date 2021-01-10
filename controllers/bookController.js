@@ -29,7 +29,7 @@ exports.index = function(req, res) {
 
 // Display list of all books.
 exports.book_list = function(req, res, next) {
-    new Book().fetchAll({ columns: ['title', 'author_id'], withRelated: 'author' })
+    new Book().fetchAll({ columns: ['title', 'author_id', 'id'], withRelated: 'author' })
         .then((books) => {
             res.render('book_list', { title: 'Book List', book_list: books.serialize() });
         })
