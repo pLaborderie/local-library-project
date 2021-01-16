@@ -1,0 +1,38 @@
+# Base docker-compose file
+version: "3.3"
+services:
+  # --------------------------------
+  #     API: NODE
+  # --------------------------------
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    depends_on:
+      - db
+    volumes:
+      - type: bind
+        source: .
+        target: /app
+    env_file: .env.local
+    ports:
+      - 8080:8080
+    working_dir: /app
+    command: "npx knex migrate:latest && npm run dev"
+  # --------------------------------
+  #     DB: POSTGRES
+  # --------------------------------
+  db:
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: library
+    ports: 
+      - 5432:5432
+    volumes:
+      - db-volume:/var/lib/postgresql/data
+
+volumes:
+  api-volume:
+  db-volume:

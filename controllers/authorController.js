@@ -4,7 +4,7 @@ const Author = require('../models/author');
 // Display list of all Authors.
 exports.author_list = async function (req, res, next) {
   try {
-    const authors = await Author.orderBy('family_name', 'asc').fetchAll()
+    const authors = await Author.orderBy('family_name', 'asc').fetchAll();
     res.render('author_list', { title: 'Author List', author_list: authors.toJSON() });
   } catch (err) {
     return next(err);
