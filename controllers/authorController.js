@@ -33,10 +33,14 @@ exports.author_create_get = function (req, res) {
 
 // Handle Author create on POST.
 exports.author_create_post = [
-  body('first_name').trim().isLength({ min: 1 }).escape().withMessage('First name must be specified.')
-    .isAlphanumeric().withMessage('First name has non-alphanumeric characters.'),
-  body('family_name').trim().isLength({ min: 1 }).escape().withMessage('Family name must be specified.')
-    .isAlphanumeric().withMessage('Family name has non-alphanumeric characters.'),
+  body('first_name').trim().isLength({ min: 1 }).escape()
+    .withMessage('First name must be specified.')
+    .isAlphanumeric()
+    .withMessage('First name has non-alphanumeric characters.'),
+  body('family_name').trim().isLength({ min: 1 }).escape()
+    .withMessage('Family name must be specified.')
+    .isAlphanumeric()
+    .withMessage('Family name has non-alphanumeric characters.'),
   body('date_of_birth', 'Invalid date of birth').optional({ checkFalsy: true }).isISO8601().toDate(),
   body('date_of_death', 'Invalid date of death').optional({ checkFalsy: true }).isISO8601().toDate(),
   (req, res, next) => {
@@ -45,7 +49,7 @@ exports.author_create_post = [
       return res.render('author_form', {
         title: 'Create Author',
         author: req.body,
-        errors: errors.array()
+        errors: errors.array(),
       });
     }
     const author = new Author({
@@ -56,18 +60,35 @@ exports.author_create_post = [
     });
     author.save().then((data) => {
       res.redirect(data.url);
-    }).catch(err => next(err));
-  }
+    }).catch((err) => next(err));
+  },
 ];
 
 // Display Author delete form on GET.
-exports.author_delete_get = function (req, res) {
-  res.send('NOT IMPLEMENTED: Author delete GET');
+exports.author_delete_get = async function (req, res, next) {
+  try {
+    const author = await new Author({ id: req.params.id }).fetch({ withRelated: 'books' });
+    if (author == null) {
+      res.redirect('/catalog/authors');
+    }
+    res.render('author_delete', { title: 'Delete Author', author: author.toJSON() });
+  } catch (err) {
+    return next(err);
+  }
 };
 
 // Handle Author delete on POST.
-exports.author_delete_post = function (req, res) {
-  res.send('NOT IMPLEMENTED: Author delete POST');
+exports.author_delete_post = async function (req, res, next) {
+  try {
+    const author = await new Author({ id: req.body.authorId }).fetch({ withRelated: 'books' });
+    if (author.books.length > 0) {
+      return res.render('author_delete', { title: 'Delete Author', author: author.toJSON() });
+    }
+    await author.destroy({ require: false });
+    res.redirect('/catalog/authors');
+  } catch (err) {
+    return next(err);
+  }
 };
 
 // Display Author update form on GET.

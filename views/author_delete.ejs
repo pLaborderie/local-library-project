@@ -1,0 +1,40 @@
+<%- include('components/header', { title }) %>
+<div class="px-4 py-5 sm:p-6">
+  <h3 class="text-lg leading-6 font-medium text-gray-900">
+    Deleting the author <%= author.name %>
+  </h3>
+  <% if (author.books.length > 0) { %>
+    <div class="mt-2 max-w-xl text-sm text-gray-500">
+      <p>Delete the following books before attempting to delete this author:</p>
+    </div>
+    <ul class="divide-y divide-gray-200">
+      <% author.books.forEach(book => { %>
+        <li>
+          <a href="<%= book.url %>" class="block hover:bg-gray-50">
+            <div class="px-4 py-4 sm:px-6">
+              <div class="flex items-center justify-between">
+                <p class="text-sm font-medium text-indigo-600 truncate">
+                  <%= book.title %>
+                </p>
+              </div>
+            </div>
+          </a>
+        </li>
+      <% }) %>
+    </ul>
+  <% } else { %>
+    <div class="mt-2 max-w-xl text-sm text-gray-500">
+      <p>
+        Do you really want to delete this author?
+      </p>
+    </div>
+    <form method="POST" action="">
+      <input id="authorId" type="hidden" name="authorId" required="true" value="<%= author.id %>">
+      <div class="mt-5">
+        <button type="submit" class="inline-flex items-center justify-center px-4 py-2 border border-transparent font-medium rounded-md text-red-700 bg-red-100 hover:bg-red-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:text-sm">
+          Delete
+        </button>
+      </div>
+    </form>
+  <% } %>
+</div>

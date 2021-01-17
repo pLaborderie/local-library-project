@@ -62,8 +62,8 @@ exports.book_create_get = async function (req, res, next) {
     const genres = await Genre.fetchAll();
     return res.render('book_form', {
       title: 'Create Book',
-      authors: authors.serialize(),
-      genres: genres.serialize(),
+      authors: authors.toJSON(),
+      genres: genres.toJSON(),
     });
   } catch (err) {
     console.error(err);
@@ -102,7 +102,7 @@ exports.book_create_post = [
           new Author().fetchAll(),
           new Genre().fetchAll(),
         );
-        const updatedGenres = genres.serialize().map(({ id }) => {
+        const updatedGenres = genres.toJSON().map(({ id }) => {
           if (genre.indexOf(id) > -1) {
             return { ...genre, checked: 'true' };
           }
@@ -110,7 +110,7 @@ exports.book_create_post = [
         });
         return res.render('book_form', {
           title: 'Create Book',
-          authors: authors.serialize,
+          authors: authors.toJSON,
           genres: updatedGenres,
           book,
           errors: errors.array(),
@@ -141,11 +141,78 @@ exports.book_delete_post = function (req, res) {
 };
 
 // Display book update form on GET.
-exports.book_update_get = function (req, res) {
-  res.send('NOT IMPLEMENTED: Book update GET');
+exports.book_update_get = async function (req, res, next) {
+  try {
+    const book = (await new Book({ id: req.params.id }).fetch({ withRelated: ['author', 'genres'] })).toJSON();
+    const authors = (await Author.fetchAll()).toJSON();
+    const genres = (await Genre.fetchAll()).toJSON();
+    if (book == null) {
+      const err = new Error('Book not found');
+      err.status = 404;
+      throw err;
+    }
+    for (let all_g_iter = 0; all_g_iter < genres.length; all_g_iter++) {
+      for (let book_g_iter = 0; book_g_iter < book.genres.length; book_g_iter++) {
+        if (genres[all_g_iter].id.toString() === book.genres[book_g_iter].id.toString()) {
+          genres[all_g_iter].checked = 'true';
+        }
+      }
+    }
+    return res.render('book_form', {
+      title: 'Update Book', authors, genres, book,
+    });
+  } catch (err) {
+    return next(err);
+  }
 };
 
 // Handle book update on POST.
-exports.book_update_post = function (req, res) {
-  res.send('NOT IMPLEMENTED: Book update POST');
-};
+exports.book_update_post = [
+  (req, res, next) => {
+    if (!(req.body.genre instanceof Array)) {
+      if (typeof req.body.genre === 'undefined') {
+        req.body.genre = [];
+      } else {
+        req.body.genre = new Array(req.body.genre);
+      }
+    }
+    next();
+  },
+  body('title', 'Title must not be empty.').trim().isLength({ min: 1 }).escape(),
+  body('author', 'Author must not be empty.').trim().isLength({ min: 1 }).escape(),
+  body('summary', 'Summary must not be empty.').trim().isLength({ min: 1 }).escape(),
+  body('isbn', 'ISBN must not be empty').trim().isLength({ min: 1 }).escape(),
+  body('genre.*').escape(),
+  async (req, res, next) => {
+    try {
+      const errors = validationResult(req);
+      const {
+        title, author, summary, isbn, genre,
+      } = req.body;
+      const book = new Book({
+        title, author, summary, isbn, id: req.params.id,
+      });
+      if (!errors.isEmpty()) {
+        const authors = await Author.fetchAll();
+        const genres = await Genre.fetchAll();
+        const updatedGenres = genres.toJSON().map((el) => {
+          if (genre.indexOf(el.id) > -1) {
+            return { ...el, checked: 'true' };
+          }
+          return el;
+        });
+        return res.render('book_form', {
+          title: 'Update Book',
+          authors: authors.toJSON(),
+          genres: updatedGenres,
+          book: book.toJSON(),
+          errors: errors.array(),
+        });
+      }
+      const bookData = new Book({ id: req.params.id }).fetch();
+      return res.redirect(bookData.url);
+    } catch (err) {
+      return next(err);
+    }
+  },
+];

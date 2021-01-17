@@ -1,0 +1,54 @@
+<%- include('components/header', { title }) %>
+<div class="mt-6 grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-6">
+  <form method="POST" action="" class="sm:col-span-4 sm:col-start-2 lg:col-span-2 lg:col-start-3">
+    <label for="book" class="block text-sm font-medium text-gray-700">* Book:</label>
+    <select id="book" name="book" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md">
+      <% book_list.sort((a, b) => {
+        const textA = a.title.toUpperCase();
+        const textB = b.title.toUpperCase();
+        return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;
+      }).forEach(book => { %>
+        <% if (locals.bookinstance) { %>
+          <option value="<%= book.id %>" selected="<%= book.id === bookinstance.book_id ? 'selected' : false %>">
+            <%= book.title %>
+          </option>
+        <% } else { %>
+          <option value="<%= book.id %>"><%= book.title %></option>
+        <% } %>
+      <% }) %>
+    </select>
+
+    <label for="imprint" class="block text-sm font-medium text-gray-700">* Imprint:</label>
+    <div class="mt-1 flex rounded-md shadow-sm">
+      <input required="true" type="text" name="imprint" id="imprint" class="focus:ring-indigo-500 focus:border-indigo-500 border-gray-300 block w-full pr-10 focus:outline-none sm:text-sm rounded-md">
+    </div>
+
+    <label for="due_back" class="block text-sm font-medium text-gray-700">* Date when book available:</label>
+    <div class="mt-1 sm:mt-0 sm:col-span-2">
+      <input required="true" type="date" name="due_back" id="due_back" class="focus:ring-indigo-500 focus:border-indigo-500 border-gray-300 block w-full pr-10 focus:outline-none sm:text-sm rounded-md">
+    </div>
+
+    <label for="status" class="block text-sm font-medium text-gray-700">* Status:</label>
+    <select id="status" name="status" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md">
+      <option value="Maintenance">Maintenance</option>
+      <option value="Available">Available</option>
+      <option value="Loaned">Loaned</option>
+      <option value="Reserved">Reserved</option>
+    </select>
+    
+    <% if (locals.errors) { %>
+      <% errors.forEach(error => { %>
+      <p class="mt-2 text-sm text-red-600">
+        <%= error.msg %>
+      </p>
+      <% }) %>
+    <% } %>
+    <div class="pt-5">
+      <div class="flex justify-end">
+        <button type="submit" class="ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+          Save
+        </button>
+      </div>
+    </div>
+  </form>
+</div>
